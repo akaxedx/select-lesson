@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: select-lesson
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 配置自己数据库地址、用户、密码
+    url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8&allowMultiQueries=true
+    username:
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'selectlesson'
+      paths-to-match: '/**'
+      packages-to-scan: anda.selectlesson
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
