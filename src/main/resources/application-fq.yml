@@ -5,8 +5,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 配置自己数据库地址、用户、密码
     url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8&allowMultiQueries=true
-    username:
-    password:
+    username: root
+    password: 159753qaz@wsx
   jpa:
     hibernate:
       ddl-auto: update
