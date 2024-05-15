@@ -1,5 +1,6 @@
 package anda.selectlesson.controller;
 
+import anda.selectlesson.req.LoginReq;
 import anda.selectlesson.req.RegisterReq;
 import anda.selectlesson.service.User.UserService;
 import anda.selectlesson.system.Response;
@@ -19,12 +20,24 @@ public class UserController {
     UserService userService;
     @Operation(summary = "注册请求")
     @PostMapping("/register")
-    public Response<Void> register(@RequestBody RegisterReq req){
+    public Response<Void> register(@RequestBody RegisterReq req) {
         try {
             userService.registerUser(req);
         }catch (RuntimeException e) {
             return Response.error(e.getMessage());
         }
         return Response.ok();
+    }
+
+    @Operation(summary = "登录请求")
+    @PostMapping("/login")
+    public Response<String> login(@RequestBody LoginReq req) {
+        try {
+            userService.loginUser(req);
+            String a = "cookie";
+            return Response.ok(a);
+        }catch (RuntimeException e) {
+            return Response.error(e.getMessage());
+        }
     }
 }

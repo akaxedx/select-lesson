@@ -19,6 +19,9 @@ public class Response<T> implements Serializable {
     public static <T> Response<T> ok() {
         return ok(null);
     }
+    public static <T> Response<T> ok(String msg) {
+        return new Response<>(Code.SUCCESS.getCode(), msg, null);
+    }
 
     public static <T> Response<T> error(T data) {
         return  new Response<>(Code.Error.getCode(), Code.Error.getMsg(), data);
