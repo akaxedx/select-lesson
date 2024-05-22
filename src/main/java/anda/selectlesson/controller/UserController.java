@@ -1,8 +1,10 @@
 package anda.selectlesson.controller;
 
+import anda.selectlesson.model.dto.UserDTO;
 import anda.selectlesson.req.LoginReq;
 import anda.selectlesson.req.RegisterReq;
-import anda.selectlesson.service.User.UserService;
+import anda.selectlesson.req.RegisterStudentReq;
+import anda.selectlesson.service.user.UserService;
 import anda.selectlesson.system.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @Tag(name = "用户请求")
 public class UserController {
     @Autowired
@@ -31,12 +33,22 @@ public class UserController {
 
     @Operation(summary = "登录请求")
     @PostMapping("/login")
-    public Response<String> login(@RequestBody LoginReq req) {
+    public Response<UserDTO> login(@RequestBody LoginReq req) {
         try {
-            userService.loginUser(req);
-            String a = "cookie";
-            return Response.ok(a);
+            UserDTO userDTO = userService.loginUser(req);
+            return Response.ok(userDTO);
         }catch (RuntimeException e) {
+            return Response.error(e.getMessage());
+        }
+    }
+
+    @Operation(summary = "注册学生身份")
+    @PostMapping("/student")
+    public Response<Long> registerStudent(@RequestBody RegisterStudentReq req) {
+        try {
+            Long l = userService.registerStudent(req);
+            return Response.ok(l);
+        }catch (Exception e) {
             return Response.error(e.getMessage());
         }
     }

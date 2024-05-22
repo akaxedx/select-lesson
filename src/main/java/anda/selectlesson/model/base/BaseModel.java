@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Entity
+@MappedSuperclass
 @Data
 public class BaseModel {
     @Id

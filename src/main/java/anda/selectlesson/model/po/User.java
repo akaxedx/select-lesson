@@ -22,6 +22,4 @@ public class User extends BaseModel{
     private String password;
     @Column(name = "authority")
     private String authority;
-    @Column(name = "badNum")
-    private Integer badNum;
 }
