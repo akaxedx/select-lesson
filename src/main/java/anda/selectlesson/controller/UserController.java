@@ -47,6 +47,9 @@ public class UserController {
     public Response<Long> registerStudent(@RequestBody RegisterStudentReq req) {
         try {
             Long l = userService.registerStudent(req);
+            if (l == -1L) {
+                return Response.error("登录异常，请重新登录");
+            }
             return Response.ok(l);
         }catch (Exception e) {
             return Response.error(e.getMessage());

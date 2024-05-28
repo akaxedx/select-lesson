@@ -20,21 +20,13 @@ import java.util.Map;
 
 public class JwtTokenUtils {
 
-    private static UserRepo userRepoStatus;
-    @Resource
-    private UserRepo userRepo;
-    @PostConstruct
-    public void setUserService() {
-        userRepoStatus = userRepo;
-    }
-
     public static String getToken(String userId, String password) {
         return JWT.create().withAudience(userId)
                 .withExpiresAt(DateUtil.offsetHour(new Date(), 2))
                 .sign(Algorithm.HMAC256(password));
     }
 
-    public static User getCurrentUser() throws IOException {
+    public static Long getCurrentUserId() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         InputStream inputStream = request.getInputStream();
@@ -48,6 +40,6 @@ public class JwtTokenUtils {
             return null;
         }
         String userId = JWT.decode(token).getAudience().get(0);
-        return userRepoStatus.getUserById(Long.parseLong(userId));
+        return Long.parseLong(userId);
     }
 }

@@ -18,6 +18,10 @@ public class Teacher extends BaseModel {
     private Long classId;
     @Column(name = "lesson_ids", columnDefinition = "JSON")
     private String lessonIds;
+    @Column(name = "student_ids", columnDefinition = "JSON")
+    private String studentIds;
     @Column(name = "identity")
     private String identity;
+    @Column(name = "used_time")
+    private String usedTime;
 }

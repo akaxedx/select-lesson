@@ -10,16 +10,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "student")
-public class Student extends BaseModel {
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "class_id")
-    private Long classId;
-    @Column(name = "lesson_ids", columnDefinition = "JSON")
-    private String lessonIds;
+@Table(name = "class")
+public class Class extends BaseModel {
     @Column(name = "class_teacher_id")
     private Long classTeacherId;
-    @Column(name = "used_time")
-    private String usedTime;
+    @Column(name = "student_ids")
+    private String studentIds;
 }

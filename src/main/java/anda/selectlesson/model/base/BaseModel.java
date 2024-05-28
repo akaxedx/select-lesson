@@ -23,5 +23,6 @@ public class BaseModel {
 
     public BaseModel() {
         createAt = LocalDateTime.now();
+        updateAt = createAt;
     }
 }
