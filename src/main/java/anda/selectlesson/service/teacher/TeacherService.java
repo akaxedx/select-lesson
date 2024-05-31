@@ -47,9 +47,12 @@ public class TeacherService {
         lesson.setTime(req.getTime());
         lesson.setMaxNum(MAX_NUM);
         lesson.setLessonName(req.getLessonName());
+        lesson.setCurrentNum(0);
+        lesson.setStudentIds("[]");
         Lesson savedLesson = lessonsRepo.save(lesson);
         lessonIds.add(savedLesson.getId());
         currentTeacher.setLessonIds(JSONUtil.toJsonStr(lessonIds));
+        teacherRepo.save(currentTeacher);
         return Response.ok(savedLesson.getId());
     }
 
