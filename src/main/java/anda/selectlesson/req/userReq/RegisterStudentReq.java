@@ -1,6 +1,7 @@
-package anda.selectlesson.req;
+package anda.selectlesson.req.userReq;
 
 import anda.selectlesson.model.base.BaseModel;
+import anda.selectlesson.req.BaseReq;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

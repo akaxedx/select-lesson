@@ -11,12 +11,10 @@ import anda.selectlesson.model.po.User;
 import anda.selectlesson.repo.StudentRepo;
 import anda.selectlesson.repo.TeacherRepo;
 import anda.selectlesson.repo.UserRepo;
-import anda.selectlesson.req.LoginReq;
-import anda.selectlesson.req.RegisterReq;
-import anda.selectlesson.req.RegisterStudentReq;
+import anda.selectlesson.req.userReq.LoginReq;
+import anda.selectlesson.req.userReq.RegisterReq;
+import anda.selectlesson.req.userReq.RegisterStudentReq;
 import anda.selectlesson.utils.JwtTokenUtils;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class UserService {

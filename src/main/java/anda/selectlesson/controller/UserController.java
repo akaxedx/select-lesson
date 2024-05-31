@@ -1,9 +1,9 @@
 package anda.selectlesson.controller;
 
 import anda.selectlesson.model.dto.UserDTO;
-import anda.selectlesson.req.LoginReq;
-import anda.selectlesson.req.RegisterReq;
-import anda.selectlesson.req.RegisterStudentReq;
+import anda.selectlesson.req.userReq.LoginReq;
+import anda.selectlesson.req.userReq.RegisterReq;
+import anda.selectlesson.req.userReq.RegisterStudentReq;
 import anda.selectlesson.service.user.UserService;
 import anda.selectlesson.system.Response;
 import io.swagger.v3.oas.annotations.Operation;

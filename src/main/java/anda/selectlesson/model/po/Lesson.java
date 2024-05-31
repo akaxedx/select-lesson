@@ -14,9 +14,14 @@ import lombok.EqualsAndHashCode;
 public class Lesson extends BaseModel {
     @Column(name = "max_num")
     private Integer maxNum;
+    @Column(name = "current_num")
+    private Integer currentNum;
     @Column(name = "student_ids", columnDefinition = "JSON")
     private String studentIds;
-    @Column(name = "teacher_id", columnDefinition = "JSON")
+    @Column(name = "teacher_id")
     private Long teacherId;
-
+    @Column(name = "lesson_name")
+    private String lessonName;
+    @Column(name = "time")
+    private Integer time;
 }
