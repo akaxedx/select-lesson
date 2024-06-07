@@ -2,6 +2,7 @@ package anda.selectlesson.utils;
 
 import anda.selectlesson.model.po.User;
 import anda.selectlesson.repo.UserRepo;
+import anda.selectlesson.req.BaseReq;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
@@ -42,4 +43,5 @@ public class JwtTokenUtils {
         String userId = JWT.decode(token).getAudience().get(0);
         return Long.parseLong(userId);
     }
+
 }

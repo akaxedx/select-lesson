@@ -1,15 +1,19 @@
-package anda.selectlesson.req.teacherReq;
+package anda.selectlesson.model.dto;
 
-import anda.selectlesson.req.BaseReq;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.io.Serializable;
 import java.util.List;
 
+@Data
 @Getter
 @Setter
-public class SetLessonReq extends BaseReq {
+@NoArgsConstructor
+public class usedTimeDTO implements Serializable {
+    Integer lessonTime;
     List<Integer> Monday;
     List<Integer> Tuesday;
     List<Integer> Wednesday;
@@ -17,8 +21,4 @@ public class SetLessonReq extends BaseReq {
     List<Integer> Friday;
     List<Integer> Saturday;
     List<Integer> Sunday;
-    Date startDate;
-    Date endDate;
-    String lessonName;
-    Long roomId;
 }

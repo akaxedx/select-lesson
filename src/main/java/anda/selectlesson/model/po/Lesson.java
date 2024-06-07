@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
@@ -22,6 +24,14 @@ public class Lesson extends BaseModel {
     private Long teacherId;
     @Column(name = "lesson_name")
     private String lessonName;
-    @Column(name = "time")
-    private Integer time;
+    @Column(name = "time", columnDefinition = "JSON")
+    private String time;
+    @Column(name = "pos")
+    private String pos;
+    @Column(name = "start_date")
+    private Date startDate;
+    @Column(name = "end_date")
+    private Date endDate;
+    @Column(name = "room_id")
+    private Long roomId;
 }

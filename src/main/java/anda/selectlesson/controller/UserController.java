@@ -46,6 +46,9 @@ public class UserController {
     @PostMapping("/student")
     public Response<Long> registerStudent(@RequestBody RegisterStudentReq req) {
         try {
+            if (null == req.getStudentNum()) {
+                req.setStudentNum(80);
+            }
             Long l = userService.registerStudent(req);
             if (l == -1L) {
                 return Response.error("登录异常，请重新登录");

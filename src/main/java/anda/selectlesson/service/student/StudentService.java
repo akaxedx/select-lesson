@@ -8,6 +8,7 @@ import anda.selectlesson.repo.LessonsRepo;
 import anda.selectlesson.repo.StudentRepo;
 import anda.selectlesson.repo.UserRepo;
 import anda.selectlesson.req.studentReq.SelectLessonReq;
+import anda.selectlesson.service.lesson.TimeService;
 import anda.selectlesson.system.Response;
 import anda.selectlesson.utils.JwtTokenUtils;
 import cn.hutool.json.JSONUtil;
@@ -17,10 +18,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Component
 public class StudentService {
+    @Autowired
+    TimeService timeService;
     @Autowired
     LessonsRepo lessonsRepo;
     @Autowired
@@ -41,12 +43,13 @@ public class StudentService {
         if(student.getLessonIds() != null) {
             lessonIds = JSONUtil.toList(student.getLessonIds(), Long.class);
         }
-        List<Lesson> exitLessons = lessonsRepo.getLessonsByIdIsIn(lessonIds);
-        for (Lesson exitLesson : exitLessons) {
-            if(Objects.equals(selectLesson.getTime(), exitLesson.getTime())) {
-                return Response.error("课程时间冲突，冲突课程: " + exitLesson.getLessonName());
-            }
+
+        Long isConflict = timeService.resolveConflict(lessonIds, selectLesson);
+        if(isConflict != -1L) {
+            Lesson conflictLesson = lessonsRepo.getReferenceById(isConflict);
+            return Response.error("课程冲突: " + conflictLesson.getLessonName());
         }
+
 
         // 学生课程 id
         lessonIds.add(selectLesson.getId());

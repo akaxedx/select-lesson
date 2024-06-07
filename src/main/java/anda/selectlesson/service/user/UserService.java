@@ -102,16 +102,15 @@ public class UserService {
             if (!teacher.getIdentity().equals(TeacherIdentity.CLASS_TEACHER)) {
                 throw new RuntimeException("你不是班主任，无权注册学生");
             }
-            if (!teacher.getUsedTime().isBlank() || teacher.getUsedTime().equals("true")) {
+            if (teacher.getUsedTime() == null){
+                teacher.setUsedTime("false");
+            }
+            if (teacher.getUsedTime().equals("true")) {
                 throw new RuntimeException("你已经新建一批学生，如有遗漏请联系管理员");
             }
             Long classId = teacher.getClassId();
             List<Student> studentList = new ArrayList<>();
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            String formatterDate = now.format(formatter);
-            long baseId = Long.parseLong(formatterDate);
-            for (int i = 0; i < 30; i++) {
+            for (int i = 0; i < req.getStudentNum(); i++) {
                 Student student = new Student();
                 student.setClassId(classId);
                 student.setClassTeacherId(teacher.getId());

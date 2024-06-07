@@ -11,6 +11,6 @@ public class RegisterStudentReq extends BaseReq {
     // Student
     private Long teacherId;
     // Teacher
-    private Integer studentNun;
+    private Integer studentNum;
     // Manager
 }

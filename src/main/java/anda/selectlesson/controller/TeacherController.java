@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/teacher")
@@ -27,12 +28,31 @@ public class TeacherController {
         if(null == req.getLessonName()) {
             return Response.error("参数缺失: 课程名称");
         }
-        if(null == req.getTime()) {
-            return Response.error("参数缺失: 课程时间");
+        if(null == req.getRoomId()) {
+            return Response.error("参数缺失: 上课地点");
         }
-        if(req.getTime() %2 != 0) {
-            return Response.error("参数错误: 课程时间");
+        if (req.getMonday()==null) {
+            req.setMonday(new ArrayList<>());
         }
+        if (req.getTuesday()==null) {
+            req.setThursday(new ArrayList<>());
+        }
+        if (req.getWednesday()==null) {
+            req.setWednesday(new ArrayList<>());
+        }
+        if (req.getThursday()==null) {
+            req.setThursday(new ArrayList<>());
+        }
+        if (req.getFriday()==null) {
+            req.setFriday(new ArrayList<>());
+        }
+        if (req.getSaturday()==null) {
+            req.setSaturday(new ArrayList<>());
+        }
+        if (req.getSunday()==null) {
+            req.setSunday(new ArrayList<>());
+        }
+
         return teacherService.setLesson(req);
     }
 }
