@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class usedTimeDTO implements Serializable {
+public class UsedTimeDTO implements Serializable {
     Integer lessonTime;
     List<Integer> Monday;
     List<Integer> Tuesday;

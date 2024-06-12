@@ -6,6 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SelectLessonReq extends BaseReq {
-    private Long lessonId;
+public class GetAllTeachersReq extends BaseReq {
+    private int pageNum;
 }

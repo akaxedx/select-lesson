@@ -20,6 +20,4 @@ public class Student extends BaseModel {
     private String lessonIds;
     @Column(name = "class_teacher_id")
     private Long classTeacherId;
-    @Column(name = "used_time")
-    private String usedTime;
 }

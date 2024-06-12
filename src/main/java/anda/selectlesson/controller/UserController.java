@@ -1,18 +1,24 @@
 package anda.selectlesson.controller;
 
+import anda.selectlesson.enums.AuthorityType;
 import anda.selectlesson.model.dto.UserDTO;
+import anda.selectlesson.model.po.Student;
+import anda.selectlesson.model.po.User;
+import anda.selectlesson.req.userReq.ConfirmReq;
 import anda.selectlesson.req.userReq.LoginReq;
 import anda.selectlesson.req.userReq.RegisterReq;
-import anda.selectlesson.req.userReq.RegisterStudentReq;
+import anda.selectlesson.service.student.StudentService;
+import anda.selectlesson.service.teacher.TeacherService;
 import anda.selectlesson.service.user.UserService;
 import anda.selectlesson.system.Response;
+import anda.selectlesson.utils.JwtTokenUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     UserService userService;
+    @Autowired
+    StudentService studentService;
     @Operation(summary = "注册请求")
     @PostMapping("/register")
     public Response<Void> register(@RequestBody RegisterReq req) {
@@ -41,21 +49,20 @@ public class UserController {
             return Response.error(e.getMessage());
         }
     }
-
-    @Operation(summary = "注册学生身份")
-    @PostMapping("/student")
-    public Response<Long> registerStudent(@RequestBody RegisterStudentReq req) {
-        try {
-            if (null == req.getStudentNum()) {
-                req.setStudentNum(80);
-            }
-            Long l = userService.registerStudent(req);
-            if (l == -1L) {
-                return Response.error("登录异常，请重新登录");
-            }
-            return Response.ok(l);
-        }catch (Exception e) {
-            return Response.error(e.getMessage());
+    @Operation(summary = "验证登录")
+    @PostMapping("/confirm")
+    public Response<Boolean> confirm(@RequestBody ConfirmReq req) throws IOException {
+        Long currentUserId = JwtTokenUtils.getCurrentUserId();
+        User user = userService.userRepo.getUserById(currentUserId);
+        if (user == null) {
+            return null;
         }
+        if (Objects.equals(user.getAuthority(), AuthorityType.STUDENT)) {
+            Student student = studentService.studentRepo.getByUserId(currentUserId);
+            if (student == null) {
+                return Response.ok(false);
+            }
+        }
+        return Response.ok(user.getUsername());
     }
 }

@@ -1,7 +1,7 @@
 package anda.selectlesson.service.teacher;
 
 import anda.selectlesson.enums.AuthorityType;
-import anda.selectlesson.model.dto.usedTimeDTO;
+import anda.selectlesson.model.dto.UsedTimeDTO;
 import anda.selectlesson.model.po.Lesson;
 import anda.selectlesson.model.po.Room;
 import anda.selectlesson.model.po.Teacher;
@@ -47,16 +47,16 @@ public class TeacherService {
         if (null != exitLesson) {
             return Response.error("该课程已被创建");
         }
-        if (room.getUsed()) {
+        if (room.getUsed() != null && room.getUsed()) {
             return Response.error("教室已被占用");
         }
         Lesson lesson = new Lesson();
         lesson.setTeacherId(currentTeacher.getId());
         lesson.setRoomId(req.getRoomId());
+        lesson.setPos(room.getBuilding()+":"+room.getFloor()+"楼"+room.getNum()+"号教室");
         room.setUsed(true);
-        roomRepo.save(room);
         // time
-        usedTimeDTO usedTimeDTO = getLessonTimeDTO(req);
+        UsedTimeDTO usedTimeDTO = getLessonTimeDTO(req);
         lesson.setTime(JSONUtil.toJsonStr(usedTimeDTO));
 
         // date
@@ -81,7 +81,7 @@ public class TeacherService {
             Lesson conflictLesson = lessonsRepo.getReferenceById(isConflict);
             return Response.error("课程冲突: " + conflictLesson.getLessonName());
         }
-
+        roomRepo.save(room);
         Lesson savedLesson = lessonsRepo.save(lesson);
 
         lessonIds.add(savedLesson.getId());
@@ -90,9 +90,9 @@ public class TeacherService {
         return Response.ok(savedLesson.getId());
     }
 
-    private static usedTimeDTO getLessonTimeDTO(SetLessonReq req) {
+    private static UsedTimeDTO getLessonTimeDTO(SetLessonReq req) {
         int lessonTime = 0;
-        usedTimeDTO usedTimeDTO = new usedTimeDTO();
+        UsedTimeDTO usedTimeDTO = new UsedTimeDTO();
         // 设置课时
         usedTimeDTO.setMonday(req.getMonday());
         lessonTime += req.getMonday().size();

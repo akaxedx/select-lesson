@@ -38,18 +38,18 @@ public class JwtInterceptor implements HandlerInterceptor {
             String token = (String) jsonMap.get("token");
 
             if (token.isBlank()) {
-                throw new RuntimeException("token错误，重新登录");
+                return false;
             }
             String userId = JWT.decode(token).getAudience().get(0);
             User user = userRepo.getUserById(Long.parseLong(userId));
             if (user.getUsername().isBlank()) {
-                throw new RuntimeException("token错误，重新登录");
+                return false;
             }
             JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
             jwtVerifier.verify(token);
             return true;
         } catch (Exception e) {
-            throw new RuntimeException("token失效，重新登陆");
+            return false;
         }
     }
 }

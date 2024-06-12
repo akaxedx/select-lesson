@@ -1,4 +1,4 @@
-package anda.selectlesson.req.userReq;
+package anda.selectlesson.req.teacherReq;
 
 import anda.selectlesson.model.base.BaseModel;
 import anda.selectlesson.req.BaseReq;

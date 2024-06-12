@@ -1,6 +1,6 @@
 package anda.selectlesson.service.lesson;
 
-import anda.selectlesson.model.dto.usedTimeDTO;
+import anda.selectlesson.model.dto.UsedTimeDTO;
 import anda.selectlesson.model.po.Lesson;
 import anda.selectlesson.repo.LessonsRepo;
 import cn.hutool.json.JSONUtil;
@@ -17,7 +17,7 @@ public class TimeService {
     LessonsRepo lessonsRepo;
     public Long resolveConflict(List<Long> ids, Lesson lesson) {
         List<Lesson> exitLessons = lessonsRepo.getLessonsByIdIsIn(ids);
-        usedTimeDTO currentLessonTime = JSONUtil.toBean(lesson.getTime(), usedTimeDTO.class);
+        UsedTimeDTO currentLessonTime = JSONUtil.toBean(lesson.getTime(), UsedTimeDTO.class);
         for (Lesson exitLesson : exitLessons) {
             Date startDate = exitLesson.getStartDate();
             Date endDate = exitLesson.getEndDate();
@@ -27,7 +27,7 @@ public class TimeService {
             if (startDate.after(lesson.getEndDate())) {
                 continue;
             }
-            usedTimeDTO exitLessonTime = JSONUtil.toBean(exitLesson.getTime(), usedTimeDTO.class);
+            UsedTimeDTO exitLessonTime = JSONUtil.toBean(exitLesson.getTime(), UsedTimeDTO.class);
             // 周一
             for (Integer mondayTime : currentLessonTime.getMonday()) {
                 for (Integer exitMondayTime : exitLessonTime.getMonday()) {

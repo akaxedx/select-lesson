@@ -1,11 +1,14 @@
 package anda.selectlesson.controller;
 
 import anda.selectlesson.enums.AuthorityType;
+import anda.selectlesson.model.dto.PageUserDTO;
 import anda.selectlesson.model.po.Teacher;
 import anda.selectlesson.model.po.User;
 import anda.selectlesson.req.BaseReq;
 import anda.selectlesson.req.managerReq.BuildBuildingReq;
 import anda.selectlesson.req.managerReq.EditTeacherReq;
+import anda.selectlesson.req.studentReq.GetAllLessonsReq;
+import anda.selectlesson.req.studentReq.GetAllTeachersReq;
 import anda.selectlesson.service.lesson.TimeService;
 import anda.selectlesson.service.manager.ManagerService;
 import anda.selectlesson.service.student.StudentService;
@@ -55,7 +58,14 @@ public class ManagerController {
         }
         return managerService.buildBuilding(req);
     }
-
+    @Operation(summary = "获取所有用户")
+    @PostMapping("/get-all-users")
+    public Response<PageUserDTO> getAllUsers (@RequestBody GetAllTeachersReq req) throws IOException {
+        if (!userIsManager(req)) {
+            return Response.error("当前用户不是管理员");
+        }
+        return managerService.getAllUsers(req);
+    }
     private boolean userIsManager(BaseReq req) throws IOException {
         Long userId = JwtTokenUtils.getCurrentUserId();
         User currentUser = managerService.userRepo.getUserById(userId);

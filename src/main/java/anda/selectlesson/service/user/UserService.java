@@ -13,7 +13,7 @@ import anda.selectlesson.repo.TeacherRepo;
 import anda.selectlesson.repo.UserRepo;
 import anda.selectlesson.req.userReq.LoginReq;
 import anda.selectlesson.req.userReq.RegisterReq;
-import anda.selectlesson.req.userReq.RegisterStudentReq;
+import anda.selectlesson.req.teacherReq.RegisterStudentReq;
 import anda.selectlesson.utils.JwtTokenUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,15 +22,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class UserService {
     @Autowired
-    UserRepo userRepo;
+    public UserRepo userRepo;
     @Autowired
     StudentRepo studentRepo;
     @Autowired
