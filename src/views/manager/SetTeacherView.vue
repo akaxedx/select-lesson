@@ -111,7 +111,7 @@ const handleClick1 = async (row: any) => {
           升级为导师
         </el-button>
         <el-button disabled size="small" v-else-if="scope.row.teacherIdentity=='class_teacher'">
-          已是导师，无法操作
+          已是导师
         </el-button>
         <el-button type="primary" size="small" @click="handleClick1(scope.row)" v-if="scope.row.authority=='STUDENT'">
           升级为老师
@@ -122,5 +122,38 @@ const handleClick1 = async (row: any) => {
 </template>
 
 <style scoped>
+/* 表格整体样式 */
+.el-table {
+  -webkit-font-smoothing: antialiased; /* 平滑字体渲染 */
+  th, td {
+    padding: 8px 0; /* 单元格内边距 */
+    text-align: center; /* 文本居中对齐 */
+  }
+  th {
+    background-color: #f5f5f5; /* 表头背景色 */
+    font-weight: 500; /* 表头字重 */
+  }
+  td {
+    border-bottom: 1px solid #ebeef5; /* 单元格下边框 */
+  }
+}
 
+/* 操作按钮样式 */
+.el-button {
+  margin: 5px 0; /* 按钮与单元格边缘的间距 */
+  border-radius: 3px; /* 按钮圆角 */
+}
+
+/* 禁用按钮样式 */
+.el-button.is-disabled {
+  opacity: 0.5; /* 降低透明度表示禁用状态 */
+  cursor: not-allowed; /* 禁用时鼠标指针样式 */
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .el-table th, .el-table td {
+    padding: 4px 0; /* 减少内边距以适应小屏幕 */
+  }
+}
 </style>

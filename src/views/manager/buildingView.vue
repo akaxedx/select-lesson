@@ -58,5 +58,62 @@ const push = ()=>{
 </template>
 
 <style scoped>
+.el-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 视口高度 */
+  padding: 20px; /* 可选，根据需要添加内边距 */
+}
 
+.el-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.el-form-item {
+  margin-bottom: 20px;
+}
+
+.el-form-item__label {
+  color: #333;
+  font-weight: bold;
+}
+
+.el-form-item__content {
+  flex-direction: column;
+}
+
+.el-input {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.el-button {
+  margin-right: 10px;
+}
+
+/* 按钮样式 */
+.el-button--primary {
+  background-color: #409eff;
+  border-color: #409eff;
+}
+
+.el-button--default {
+  background-color: #fff;
+  color: #409eff;
+  border-color: #409eff;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .el-form {
+    width: 90%;
+    margin: 20px auto;
+  }
+}
 </style>
