@@ -8,12 +8,12 @@ export type SetLessonReq = {
     endDate?: string;
     lessonName?: string;
     roomId?: number;
-    tuesday?: Array<number>;
-    thursday?: Array<number>;
+    saturday?: Array<number>;
     monday?: Array<number>;
+    thursday?: Array<number>;
     wednesday?: Array<number>;
     friday?: Array<number>;
+    tuesday?: Array<number>;
     sunday?: Array<number>;
-    saturday?: Array<number>;
 };
 

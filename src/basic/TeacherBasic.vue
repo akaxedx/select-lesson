@@ -1,10 +1,25 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
 import {onMounted, reactive, ref} from "vue";
-import {BaseReq, GetLessonReq, RegisterStudentReq, Service, SetLessonReq} from "../../generated";
+import {BaseReq, GetLessonReq, GetMyLessonStudentReq, RegisterStudentReq, Service, SetLessonReq} from "../../generated";
 import type {ComponentSize, FormInstance} from 'element-plus'
 import {ElMessage} from "element-plus";
+import { ElMessageBox } from 'element-plus'
 
+const dialogVisible = ref(false)
+const over = () =>{
+  dialogVisible.value=false
+  window.location.reload()
+}
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('Are you sure to close this dialog?')
+      .then(() => {
+        done()
+      })
+      .catch(() => {
+        // catch error
+      })
+}
 const router = useRouter()
 const username = localStorage.getItem('name')
 const token = localStorage.getItem('token')
@@ -19,7 +34,7 @@ const login = () => {
 }
 const drawer1 = ref(false)
 const drawer2 = ref(false)
-
+const drawer3 = ref(false)
 const formRef = ref<FormInstance>()
 
 const numberValidateForm = reactive({
@@ -76,113 +91,128 @@ const baseReq = reactive({
   token: '',
 } as BaseReq)
 const getMyLessons = reactive({
-  token:''
+  token: ''
 } as GetLessonReq)
 const tableData = reactive([
   {
-    time:'8:00-8:45',
+    time: '8:00-8:45',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'8:50-9:35',
+    time: '8:50-9:35',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'10:00-10:45',
+    time: '10:00-10:45',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'10:50-11:35',
+    time: '10:50-11:35',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'14:30-15:15',
+    time: '14:30-15:15',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'15:20-16:05',
+    time: '15:20-16:05',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'16:30-17:15',
+    time: '16:30-17:15',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'19:00-19:45',
+    time: '19:00-19:45',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'19:50-20:35',
+    time: '19:50-20:35',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   },
   {
-    time:'20:45-21:30',
+    time: '20:45-21:30',
     Monday: '',
     Tuesday: '',
     Wednesday: '',
-    Thursday:'',
-    Friday:'',
-    Saturday:'',
-    Sunday:'',
+    Thursday: '',
+    Friday: '',
+    Saturday: '',
+    Sunday: '',
   }
 ])
-const back = () =>{
+const lessonData = reactive([
+  {
+    lessonName: "",
+    lessonId: 0,
+    current: 0,
+    pos: ""
+  }
+])
+let studentData = reactive([
+  {
+    studentName:"",
+    studentId:0
+  }
+])
+const back = () => {
   drawer2.value = false
 }
+
 onMounted(async () => {
   baseReq.token = token as string
   const res = await Service.getAllOkRoom(baseReq)
@@ -208,35 +238,49 @@ onMounted(async () => {
   })
   getMyLessons.token = token as string
   const res2 = await Service.getMyLessons(getMyLessons)
-  if (res2.code===400) {
+  if (res2.code === 400) {
     ElMessage.error(res2.msg)
     return
   }
-  res2.data?.forEach(lesson =>{
-    lesson.usedTimeDTO?.monday?.forEach(time=>{
-      tableData[time-1].Monday = lesson.lessonName as string
+  res2.data?.forEach(lesson => {
+    lesson.usedTimeDTO?.monday?.forEach(time => {
+      tableData[time - 1].Monday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.tuesday?.forEach(time=>{
-      tableData[time-1].Tuesday = lesson.lessonName as string
+    lesson.usedTimeDTO?.tuesday?.forEach(time => {
+      tableData[time - 1].Tuesday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.wednesday?.forEach(time=>{
-      tableData[time-1].Wednesday = lesson.lessonName as string
+    lesson.usedTimeDTO?.wednesday?.forEach(time => {
+      tableData[time - 1].Wednesday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.thursday?.forEach(time=>{
-      tableData[time-1].Thursday = lesson.lessonName as string
+    lesson.usedTimeDTO?.thursday?.forEach(time => {
+      tableData[time - 1].Thursday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.friday?.forEach(time=>{
-      tableData[time-1].Friday = lesson.lessonName as string
+    lesson.usedTimeDTO?.friday?.forEach(time => {
+      tableData[time - 1].Friday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.saturday?.forEach(time=>{
-      tableData[time-1].Saturday = lesson.lessonName as string
+    lesson.usedTimeDTO?.saturday?.forEach(time => {
+      tableData[time - 1].Saturday = lesson.lessonName as string
     })
-    lesson.usedTimeDTO?.sunday?.forEach(time=>{
-      tableData[time-1].Sunday = lesson.lessonName as string
+    lesson.usedTimeDTO?.sunday?.forEach(time => {
+      tableData[time - 1].Sunday = lesson.lessonName as string
     })
   })
-  console.log(res.data)
-  console.log(ruleForm)
+  const res3 = await Service.getTMyLessons(baseReq)
+  res3.data?.lessonDTOS?.forEach(lesson => {
+    const newLesson = {
+      lessonName: "",
+      lessonId: 0,
+      current: 0,
+      pos: ""
+    }
+    newLesson.lessonName = lesson.lesson?.lessonName
+    newLesson.lessonId = lesson.lesson?.id
+    newLesson.pos = lesson.lesson?.pos
+    newLesson.current = lesson.lesson?.currentNum
+    console.log("2")
+    console.log(newLesson)
+    lessonData.push(newLesson)
+  })
 })
 const setLessonReq = reactive({
   token: '',
@@ -324,6 +368,28 @@ const formatDate = (date: Date): string => {
 
   // 构建新的日期时间字符串
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+const getMyLessonsStudentReq = reactive({
+  token: "",
+  lessonId: 0
+} as GetMyLessonStudentReq)
+
+const handleClick1 = async (row: any) => {
+  dialogVisible.value=true
+  getMyLessonsStudentReq.lessonId = row.lessonId
+  getMyLessonsStudentReq.token = token
+  const res = await Service.getMyLessonsStudents(getMyLessonsStudentReq)
+  res.data?.forEach(student=>{
+    const newStudent = {
+      studentName:"",
+      studentId:0
+    }
+    newStudent.studentId=student.studentId
+    newStudent.studentName=student.name
+    console.log("111")
+    console.log(newStudent)
+    studentData.push(newStudent)
+  })
 }
 </script>
 
@@ -634,6 +700,44 @@ const formatDate = (date: Date): string => {
               <el-button @click="back">Cancel</el-button>
             </el-form-item>
           </el-form>
+        </el-drawer>
+        <el-button style="margin-left: 16px" type="primary" @click="drawer3 = true">
+          课程详情
+        </el-button>
+        <el-drawer v-model="drawer3" :with-header="false" size="80%" title="I am the title">
+          <template #default>
+            <el-table :data="lessonData.filter(item=>item.lessonId!==0)" style="width: 100%">
+              <el-table-column label="课程名" prop="lessonName" width="180"/>
+              <el-table-column label="课程id" prop="lessonId" width="180"/>
+              <el-table-column label="课程人数" prop="current" width="180"/>
+              <el-table-column label="学生详情" width="180">
+                <template v-slot="scope">
+                  <el-button plain @click="handleClick1(scope.row)">
+                    查看详情
+                  </el-button>
+
+                  <el-dialog
+                      v-model="dialogVisible"
+                      title="Tips"
+                      width="500"
+                      :before-close="handleClose"
+                  >
+                    <el-table :data="studentData.filter(item=>item.studentId!==0)" style="width: 100%">
+                      <el-table-column prop="studentName" label="学生姓名" width="180" />
+                      <el-table-column prop="studentId" label="学生ID" width="180" />
+                    </el-table>
+                    <template #footer>
+                      <div class="dialog-footer">
+                        <el-button type="primary" @click="over">
+                          确定
+                        </el-button>
+                      </div>
+                    </template>
+                  </el-dialog>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
         </el-drawer>
         <span>&nbsp;</span>
         <el-button type="primary" @click="login">切换登录</el-button>

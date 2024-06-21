@@ -4,12 +4,12 @@
 /* eslint-disable */
 export type UsedTimeDTO = {
     lessonTime?: number;
-    tuesday?: Array<number>;
-    thursday?: Array<number>;
+    saturday?: Array<number>;
     monday?: Array<number>;
+    thursday?: Array<number>;
     wednesday?: Array<number>;
     friday?: Array<number>;
+    tuesday?: Array<number>;
     sunday?: Array<number>;
-    saturday?: Array<number>;
 };
 

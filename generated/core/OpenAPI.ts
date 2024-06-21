@@ -21,7 +21,6 @@ export type OpenAPIConfig = {
 
 export const OpenAPI: OpenAPIConfig = {
     BASE: 'http://localhost:8121/api',
-    // BASE: 'http://back.vip.cpolar.top/api',
     VERSION: '0',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',

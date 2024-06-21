@@ -9,12 +9,14 @@ import type { EditTeacherReq } from '../models/EditTeacherReq';
 import type { GetAllLessonsReq } from '../models/GetAllLessonsReq';
 import type { GetAllTeachersReq } from '../models/GetAllTeachersReq';
 import type { GetLessonReq } from '../models/GetLessonReq';
+import type { GetMyLessonStudentReq } from '../models/GetMyLessonStudentReq';
 import type { LoginReq } from '../models/LoginReq';
 import type { RegisterReq } from '../models/RegisterReq';
 import type { RegisterStudentReq } from '../models/RegisterStudentReq';
 import type { ResponseBoolean } from '../models/ResponseBoolean';
 import type { ResponseListMyLessonDTO } from '../models/ResponseListMyLessonDTO';
 import type { ResponseListRoom } from '../models/ResponseListRoom';
+import type { ResponseListStudentsDTO } from '../models/ResponseListStudentsDTO';
 import type { ResponseLong } from '../models/ResponseLong';
 import type { ResponsePageLessonDTO } from '../models/ResponsePageLessonDTO';
 import type { ResponsePageTeacherDTO } from '../models/ResponsePageTeacherDTO';
@@ -120,6 +122,38 @@ export class Service {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/teacher/get-ok-room',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * 获得我的课程
+     * @param requestBody
+     * @returns ResponsePageLessonDTO OK
+     * @throws ApiError
+     */
+    public static getTMyLessons(
+        requestBody: BaseReq,
+    ): CancelablePromise<ResponsePageLessonDTO> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/teacher/get-my-lessons',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * 获取我课程的学生
+     * @param requestBody
+     * @returns ResponseListStudentsDTO OK
+     * @throws ApiError
+     */
+    public static getMyLessonsStudents(
+        requestBody: GetMyLessonStudentReq,
+    ): CancelablePromise<ResponseListStudentsDTO> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/teacher/get-my-lessons-students',
             body: requestBody,
             mediaType: 'application/json',
         });
