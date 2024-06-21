@@ -1,12 +1,14 @@
 package anda.selectlesson.service.teacher;
 
 import anda.selectlesson.enums.AuthorityType;
+import anda.selectlesson.model.dto.LessonDTO;
+import anda.selectlesson.model.dto.PageLessonDTO;
+import anda.selectlesson.model.dto.StudentsDTO;
 import anda.selectlesson.model.dto.UsedTimeDTO;
-import anda.selectlesson.model.po.Lesson;
-import anda.selectlesson.model.po.Room;
-import anda.selectlesson.model.po.Teacher;
-import anda.selectlesson.model.po.User;
+import anda.selectlesson.model.po.*;
 import anda.selectlesson.repo.*;
+import anda.selectlesson.req.BaseReq;
+import anda.selectlesson.req.teacherReq.GetMyLessonStudentReq;
 import anda.selectlesson.req.teacherReq.SetLessonReq;
 import anda.selectlesson.service.lesson.TimeService;
 import anda.selectlesson.system.Response;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -90,6 +93,41 @@ public class TeacherService {
         return Response.ok(savedLesson.getId());
     }
 
+    public Response<PageLessonDTO> getMyLessons(BaseReq req) throws IOException {
+        Long userId = JwtTokenUtils.getCurrentUserId();
+        Teacher teacher = teacherRepo.getByUserId(userId);
+        String lessonIdsJson = teacher.getLessonIds();
+        List<Long> lessonIds = JSONUtil.toList(lessonIdsJson, Long.class);
+        List<Lesson> lessons = lessonsRepo.getLessonsByIdIsIn(lessonIds);
+        PageLessonDTO pageLessonDTO = new PageLessonDTO();
+        List<LessonDTO> lessonDTOS = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            lessonDTOS.add(lessonPO2DTO(lesson));
+        }
+        pageLessonDTO.setLessonDTOS(lessonDTOS);
+        return Response.ok(pageLessonDTO);
+    }
+
+    public Response<List<StudentsDTO>> getMyLessonsStudents(GetMyLessonStudentReq req) throws IOException {
+        Long userId = JwtTokenUtils.getCurrentUserId();
+        Teacher teacher = teacherRepo.getByUserId(userId);
+        String lessonIdsJson = teacher.getLessonIds();
+        List<Long> lessonIds = JSONUtil.toList(lessonIdsJson, Long.class);
+        boolean contains = lessonIds.contains(req.getLessonId());
+        if (!contains) {
+            return Response.error("请求错误");
+        }
+        Lesson lesson = lessonsRepo.getReferenceById(req.getLessonId());
+        String studentIds = lesson.getStudentIds();
+        List<Long> students = JSONUtil.toList(studentIds, Long.class);
+        List<Student> studentList = studentRepo.getStudentsByIdIsIn(students);
+        List<StudentsDTO> studentsDTOList = new ArrayList<>();
+        for (Student student : studentList) {
+            studentsDTOList.add(studentPO2DTO(student));
+        }
+        return Response.ok(studentsDTOList);
+    }
+
     private static UsedTimeDTO getLessonTimeDTO(SetLessonReq req) {
         int lessonTime = 0;
         UsedTimeDTO usedTimeDTO = new UsedTimeDTO();
@@ -112,5 +150,19 @@ public class TeacherService {
         return usedTimeDTO;
     }
 
+    private LessonDTO lessonPO2DTO(Lesson lesson) {
+        LessonDTO lessonDTO = new LessonDTO();
+        lessonDTO.setUsername(lessonDTO.getUsername());
+        lessonDTO.setLesson(lesson);
+        return lessonDTO;
+    }
+
+    private StudentsDTO studentPO2DTO(Student student) {
+        StudentsDTO studentsDTO = new StudentsDTO();
+        studentsDTO.setStudentId(student.getId());
+        User user = userRepo.getUserById(student.getUserId());
+        studentsDTO.setName(user.getUsername());
+        return studentsDTO;
+    }
 
 }

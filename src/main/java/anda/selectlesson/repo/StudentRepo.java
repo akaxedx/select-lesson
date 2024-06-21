@@ -9,4 +9,5 @@ import java.util.List;
 public interface StudentRepo extends JpaRepository<Student, Long> {
     Student getByUserId(Long userId);
     List<Student> getStudentsByClassId(Long classId);
+    List<Student> getStudentsByIdIsIn(List<Long> ids);
 }

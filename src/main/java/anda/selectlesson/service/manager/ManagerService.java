@@ -104,6 +104,7 @@ public class ManagerService {
             user.setAuthority(AuthorityType.TEACHER);
             userRepo.save(user);
             teacher.setStudentIds("[]");
+            teacher.setLessonIds("[]");
             return Response.ok(teacherRepo.save(teacher));
         }
     }

@@ -1,8 +1,11 @@
 package anda.selectlesson.controller;
 
+import anda.selectlesson.model.dto.PageLessonDTO;
+import anda.selectlesson.model.dto.StudentsDTO;
 import anda.selectlesson.model.po.Room;
 import anda.selectlesson.repo.RoomRepo;
 import anda.selectlesson.req.BaseReq;
+import anda.selectlesson.req.teacherReq.GetMyLessonStudentReq;
 import anda.selectlesson.req.teacherReq.SetLessonReq;
 import anda.selectlesson.req.teacherReq.RegisterStudentReq;
 import anda.selectlesson.service.teacher.TeacherService;
@@ -92,5 +95,17 @@ public class TeacherController {
     public Response<List<Room>> getAllOkRoom(@RequestBody BaseReq req) {
         List<Room> rooms = roomRepo.getRoomsByUsedIsNull();
         return Response.ok(rooms);
+    }
+
+    @Operation(summary = "获得我的课程")
+    @PostMapping("/get-my-lessons")
+    public Response<PageLessonDTO> getTMyLessons(@RequestBody BaseReq req) throws IOException {
+        return teacherService.getMyLessons(req);
+    }
+
+    @Operation(summary = "获取我课程的学生")
+    @PostMapping("/get-my-lessons-students")
+    public Response<List<StudentsDTO>> getMyLessonsStudents(@RequestBody GetMyLessonStudentReq req) throws IOException {
+        return teacherService.getMyLessonsStudents(req);
     }
 }
